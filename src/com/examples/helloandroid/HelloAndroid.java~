@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class HelloAndroid extends Activity
 {
-    public final float maxAcceptedSpeed = 2.5f;
+    public final float maxAcceptedSpeed = 8.0f;
 
     protected float frictionLevel = 0;
     protected int climaxLevel = 0;
