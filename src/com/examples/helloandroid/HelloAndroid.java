@@ -29,12 +29,13 @@ public class HelloAndroid extends Activity
 	protected VelocityTracker vTracker = null;
 	
 	protected float displayHeight = 450;
+	protected final float maxVelocity = displayHeight * 3;
 
 	protected TextView texto;
     protected TextView climaxGauge;
 
     public float normalizedSpeed(float rawSpeed) {
-        float resultingSpeed = rawSpeed * (100f / displayHeight);
+        float resultingSpeed = rawSpeed * (100f / maxVelocity);
 		if (resultingSpeed < 0) resultingSpeed *= -1;
 
         return resultingSpeed;
@@ -42,15 +43,17 @@ public class HelloAndroid extends Activity
 
     public int computeClimaxIncrement(float normalizedSpeed) {
         int resultingIncrement = 0;
-        if (normalizedSpeed <= 10f || normalizedSpeed >= 90f) {
+        if (normalizedSpeed <= 5f || normalizedSpeed >= 95f) {
             resultingIncrement = -2;
-        } else if (normalizedSpeed <= 20f || normalizedSpeed >= 80f) {
+        } else if (normalizedSpeed <= 10f || normalizedSpeed >= 90f) {
             resultingIncrement = -1;
-        } else if (normalizedSpeed <= 40f || normalizedSpeed >= 60f) {
+        } else if (normalizedSpeed <= 15f || normalizedSpeed >= 85f) {
             resultingIncrement = 0;
-        } else {
+        } else if (normalizedSpeed <= 35f || normalizedSpeed >= 65f) {
             resultingIncrement = 1;
-        }
+        } else {
+			resultingIncrement = 2;
+		}
         climaxGauge.setText(climaxGauge.getText() + Integer.toString(resultingIncrement));
         return resultingIncrement;
     }
@@ -69,7 +72,7 @@ public class HelloAndroid extends Activity
     }
 
     public void processClimaxUpdate() {
-		vTracker.computeCurrentVelocity(1000, 450);
+		vTracker.computeCurrentVelocity(1000, 1350);
         // float normSpeed = normalizedSpeed(currY, histY, currTime, histTime);
 		float normSpeed = normalizedSpeed(vTracker.getYVelocity());		
 		texto.setText("normSpeed = " + Float.toString(normSpeed));
@@ -150,7 +153,9 @@ public class HelloAndroid extends Activity
 					if (vTracker == null) vTracker = VelocityTracker.obtain();
 				} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					vTracker.addMovement(event);
-				}					
+				} else if (event.getAction() == MotionEvent.ACTION_UP) {
+					vTracker.clear();
+				}
 				
 			    return true;
 		    }
