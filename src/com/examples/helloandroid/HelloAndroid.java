@@ -92,64 +92,10 @@ public class HelloAndroid extends Activity
         climaxGauge = (TextView) findViewById(R.id.climaxGauge);
 
 		vTracker = VelocityTracker.obtain();
-		
-	    /*final TextView textoDestino = (TextView) findViewById(R.id.textoDestino);
-
-	    final TextView texto = (TextView) findViewById(R.id.texto);
-	
-	    texto.setOnClickListener(new View.OnClickListener() {
-		    public void onClick(View v) {
-			    textoDestino.setText("Clicou!!!");
-		    }
-	    });
 
 	    texto.setOnTouchListener(new View.OnTouchListener() {
 		    public boolean onTouch(View v, MotionEvent event) {
-			    textoDestino.setText(Integer.toString(event.getAction()));
-			    return true;
-		    }
-	    });*/
-
-	    texto.setOnTouchListener(new View.OnTouchListener() {
-		    public boolean onTouch(View v, MotionEvent event) {
-			    // for (int h = 0; h < historySize; h++) {
-				    // texto.setText(
-					    // texto.getText() + "h=" + Integer.toString(h) + "/" +
-					    // Float.toString(event.getHistoricalEventTime(h))
-					    // "x=" + Float.toString(event.getHistoricalX(h)) + "/" +
-					    // "y=" + Float.toString(event.getHistoricalY(h)) + "; "
-				    // );
-				    // speed = (currY - event.getHistoricalY(h)) / 
-					    // (currY - event.getHistoricalEventTime(h));
-				    // speed = speed * 1000000;
-				    // if (speed < 0) speed *= -1;
-
-				    // texto.setText("Friction = " + Float.toString(speed));
-
-				    // if (speed > threshold) {
-					   // texto.setBackgroundColor(0xffff0000);
-				    // } else {
-					   // texto.setBackgroundColor(0xff00ff00);
-				    // }
-
-			    // }				
-
-				// if (event.getHistorySize() > 0) {
-					// vTracker.addMovement();
-					// currTime = System.currentTimeMillis();
-					// currY = event.getY();	
-					// histTime = event.getHistoricalEventTime(0);
-					// histY = event.getHistoricalY(0);
-					
-					// texto.setText("currTime = " + Float.toString(currTime) + "/ncurrY = " + Float.toString(currY) +
-						// "/nhistTime = " + Float.toString(histTime) + "/nhistY = " + Float.toString(histY) +
-						// "/nNormalized Speed = " + Float.toString(normalizedSpeed(currY, histY, currTime, histTime)) + 
-						// "; DisplayHeight = " + Float.toString(displayHeight));
-				// } else {
-					// speed = 0;
-				// }
-				
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					if (vTracker == null) vTracker = VelocityTracker.obtain();
 				} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
 					vTracker.addMovement(event);
