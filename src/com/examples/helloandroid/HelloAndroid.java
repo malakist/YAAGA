@@ -11,7 +11,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.ImageView;
 import android.view.VelocityTracker;
+
+import android.os.Vibrator;
 
 public class HelloAndroid extends Activity
 {
@@ -31,7 +34,7 @@ public class HelloAndroid extends Activity
 	protected float displayHeight = 450;
 	protected final float maxVelocity = displayHeight * 3;
 
-	protected TextView texto;
+	protected ImageView image;
     protected TextView climaxGauge;
 
     public float normalizedSpeed(float rawSpeed) {
@@ -54,7 +57,8 @@ public class HelloAndroid extends Activity
         } else {
 			resultingIncrement = 2;
 		}
-        climaxGauge.setText(climaxGauge.getText() + Integer.toString(resultingIncrement));
+        // climaxGauge.setText(climaxGauge.getText() + Integer.toString(resultingIncrement));
+		
         return resultingIncrement;
     }
 
@@ -68,14 +72,18 @@ public class HelloAndroid extends Activity
     }
 
     public void updateClimaxGauge() {
-        climaxGauge.setText("Climax = " + Integer.toString(climaxLevel));
+        //climaxGauge.setText("Climax = " + Integer.toString(climaxLevel));
+		String gaugeLevel = new String();
+		for (int i = 0; i < climaxLevel; ++i) {
+			gaugeLevel += "X";
+		}
+		climaxGauge.setText(gaugeLevel);
     }
 
     public void processClimaxUpdate() {
 		vTracker.computeCurrentVelocity(1000, 1350);
         // float normSpeed = normalizedSpeed(currY, histY, currTime, histTime);
-		float normSpeed = normalizedSpeed(vTracker.getYVelocity());		
-		texto.setText("normSpeed = " + Float.toString(normSpeed));
+		float normSpeed = normalizedSpeed(vTracker.getYVelocity());
         int climaxInc = computeClimaxIncrement(normSpeed);
         incrementClimax(climaxInc);
         updateClimaxGauge();
@@ -88,12 +96,12 @@ public class HelloAndroid extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-	    texto = (TextView) findViewById(R.id.texto);
+	    image = (ImageView) findViewById(R.id.image);
         climaxGauge = (TextView) findViewById(R.id.climaxGauge);
 
 		vTracker = VelocityTracker.obtain();
 
-	    texto.setOnTouchListener(new View.OnTouchListener() {
+	    image.setOnTouchListener(new View.OnTouchListener() {
 		    public boolean onTouch(View v, MotionEvent event) {
 			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					if (vTracker == null) vTracker = VelocityTracker.obtain();
@@ -106,6 +114,14 @@ public class HelloAndroid extends Activity
 			    return true;
 		    }
 	    });
+		
+		/*TimerTask timerTask = new TimerTask() {
+			@Override
+			public void run() {
+			
+			}
+		};*/
+		
 
         new Thread(
             new Runnable() {
@@ -113,7 +129,7 @@ public class HelloAndroid extends Activity
                     try {
                         while(true) {                        
                             Thread.sleep(2000);
-                            texto.post(new Runnable() {
+                            image.post(new Runnable() {
                                 public void run() {
                                     incrementClimax(-1);
                                     updateClimaxGauge();
