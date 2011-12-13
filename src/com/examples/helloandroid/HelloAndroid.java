@@ -13,8 +13,9 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.view.VelocityTracker;
+import android.util.Log;
 
-import android.os.Vibrator;
+import com.examples.helloandroid.LabelView;
 
 public class HelloAndroid extends Activity
 {
@@ -35,7 +36,7 @@ public class HelloAndroid extends Activity
 	protected final float maxVelocity = displayHeight * 3;
 
 	protected ImageView image;
-    protected TextView climaxGauge;
+    protected LabelView climaxGauge;
 
     public float normalizedSpeed(float rawSpeed) {
         float resultingSpeed = rawSpeed * (100f / maxVelocity);
@@ -73,11 +74,21 @@ public class HelloAndroid extends Activity
 
     public void updateClimaxGauge() {
         //climaxGauge.setText("Climax = " + Integer.toString(climaxLevel));
-		String gaugeLevel = new String();
-		for (int i = 0; i < climaxLevel; ++i) {
-			gaugeLevel += "X";
+		// String gaugeLevel = new String();
+		// for (int i = 0; i < climaxLevel; ++i) {
+			// gaugeLevel += "X";
+		// }
+		
+		if (climaxLevel >= 3) {
+			setContentView(R.layout.victory);
+		} else {
+			if (climaxGauge != null) {
+				Log.i("HelloAndroid", "climaxGauge está sendo atualizado");
+				climaxGauge.setLevel(climaxLevel);
+			} else {
+				Log.i("HelloAndroid", "climaxGauge está nulo");
+			}
 		}
-		climaxGauge.setText(gaugeLevel);
     }
 
     public void processClimaxUpdate() {
@@ -97,12 +108,14 @@ public class HelloAndroid extends Activity
         setContentView(R.layout.main);
 
 	    image = (ImageView) findViewById(R.id.image);
-        climaxGauge = (TextView) findViewById(R.id.climaxGauge);
+        climaxGauge = (LabelView) findViewById(R.id.climaxGauge);
 
 		vTracker = VelocityTracker.obtain();
 
 	    image.setOnTouchListener(new View.OnTouchListener() {
 		    public boolean onTouch(View v, MotionEvent event) {
+				Log.i("HelloAndroid", "onTouch disparado");
+			
 			    if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					if (vTracker == null) vTracker = VelocityTracker.obtain();
 				} else if (event.getAction() == MotionEvent.ACTION_MOVE) {

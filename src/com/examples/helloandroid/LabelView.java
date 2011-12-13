@@ -3,35 +3,51 @@ package com.examples.helloandroid;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.view.View;
 import android.util.AttributeSet;
+import android.util.Log;
 
 public class LabelView extends View {
     private Paint mTextPaint;
     private String mText;
     private int mAscent;
+	
+	private int measuredW = 0;
+	private int measuredH = 0;
+	
+	private int mLevel = 0;
+	
+	private static final String TAG = "LabelView";
 
     public LabelView(Context context) {
         super(context);
         initLabelView();
+		Log.i(TAG, "Invocado o 1o construtor");
     }
 
     public LabelView(Context context, AttributeSet attrs) {
-        super(context);
+        super(context, attrs);
         initLabelView();
+		Log.i(TAG, "Invocando o 2o construtor");
     }
+	
+	// public LabelView(Context context, AttributeSet attrs, Map params) {
+		// super
+	// }
 
     private final void initLabelView() {
-        //mText = "Rodrigo";
+        mText = "Rodrigo";
         mTextPaint = new Paint();
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(16 * getResources().getDisplayMetrics().density);
-        mTextPaint.setColor(0xFF000000);
-        setPadding(3, 3, 3, 3);
+        mTextPaint.setColor(0xFFFF0000);
+		// setHeight(getResources().getDisplayMetrics().heightPixels);
+		// setWidth(20);
     }
 
-    public void setText(String text) {
-        mText = text;
+    public void setLevel(int level) {
+        mLevel = level;
         requestLayout();
         invalidate();
     }
@@ -50,7 +66,11 @@ public class LabelView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measureWidth(widthMeasureSpec), measureHeight(heightMeasureSpec));
+		Log.i(TAG, "Invocado o evento onMeasure");
+		measuredW = measureWidth(widthMeasureSpec);
+		measuredH = measureHeight(heightMeasureSpec);
+		Log.i(TAG, "measuredW = " + Integer.toString(measuredW) + "; measuredH = " + Integer.toString(measuredH));
+        setMeasuredDimension(measuredW, measuredH);
     }
 
     private int measureWidth(int measureSpec) {
@@ -93,7 +113,19 @@ public class LabelView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+		Log.i(TAG, "Invocado o evento onDraw");
+		Log.i(TAG, "Level atual = " + Integer.toString(mLevel));
         super.onDraw(canvas);
-        canvas.drawText(mText, getPaddingLeft(), getPaddingTop() - mAscent, mTextPaint);
+        //canvas.drawText(mText, getPaddingLeft(), getPaddingTop() - mAscent, mTextPaint);
+		//canvas.drawCircle(1.0, 1.0, 10.0, mTextPaint);
+				
+		canvas.drawColor(0xFF000000);
+		
+		// int localLevel = (mLevel < 10) ? 10 : mLevel;
+		int localLevel = mLevel;
+		float barHeight = (float) ((localLevel * measuredH) / 50f);
+		
+		RectF rc = new RectF(0.0f, measuredH - barHeight, (float) measuredW, measuredH);
+		canvas.drawRoundRect(rc, 3.0f, 3.0f, mTextPaint);
     }
 }

@@ -4,14 +4,9 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<com.examples.helloandroid.LabelView
-    android:id="@+id/climaxGauge"
-	android:layout_width="20dip"
-	android:layout_height="fill_parent"
-    />
-<ImageView
-	android:id="@+id/image"
+<TextView
+	android:id="@+id/txtVictory"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="#00ff00"/>
+	android:text="Você venceu!!"/>
 </LinearLayout>
